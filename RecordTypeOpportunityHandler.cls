@@ -1,6 +1,7 @@
 public class RecordTypeOpportunityHandler {
     public static void createRenewalOpportunities(List<Opportunity> Opportunities) {
         try{
+            //list of Renewal Opportunity record type records
             List<Opportunity> renewalOpportunities = new List<Opportunity>();
             
             RecordType rectypeId = [SELECT Id FROM RecordType WHERE DeveloperName ='Renewal_Opportunity'];
