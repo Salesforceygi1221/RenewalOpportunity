@@ -1,22 +1,37 @@
 @isTest
 public class TestRecordTypeOpportunityHandler {
-    @isTest 
-    static void testcreateRenewalOpportunities(){
+    private static List<Opportunity> oppList;
+    @testSetup
+    static void setUpRecords() {
         // Create a list of opportunities
-        List<Opportunity> opplist = new List<Opportunity>();
+        oppList = new List<Opportunity>();
+        
+        // Add an opportunity with the RecordTypeId of 'Business'
         Opportunity opp1 = new Opportunity();
+        opp1.Name = 'sample1';
+        opp1.CloseDate = System.today();
         opp1.RecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Business').getRecordTypeId();
         opp1.StageName = 'Closed Won';
-        opplist.add(opp1);
-
+        oppList.add(opp1);
+        
+        // Add an opportunity with the RecordTypeId of 'Business'
         Opportunity opp2 = new Opportunity();
+        opp2.Name = 'sample2';
+        opp2.CloseDate = System.today();
         opp2.RecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Business').getRecordTypeId();
         opp2.StageName = 'Closed Lost';
-        opplist.add(opp2);
-
+        oppList.add(opp2);
         
-        test.startTest();
-        RecordTypeOpportunityHandler.createRenewalOpportunities(opplist);
+        Database.insert(oppList, false);
+    }
+    
+    @isTest
+    static void testCreateRenewalOpportunities() {
+        // Start the test
+        test.startTest();        
+        // Call the createRenewalOpportunities() method on the RecordTypeOpportunityHandler class
+        RecordTypeOpportunityHandler.createRenewalOpportunities(oppList);
+        // Stop the test
         test.stopTest();
     }
 }
