@@ -1,19 +1,19 @@
 public class RecordTypeOpportunityHandler {
-    public static void createRenewalOpportunities(List<Opportunity> Opportunities) {
+    public static void createRenewalOpportunities(List<Opportunity> opportunities) {
         try{
             //list of Renewal Opportunity record type records
             List<Opportunity> renewalOpportunities = new List<Opportunity>();
             
-            RecordType rectypeId = [SELECT Id FROM RecordType WHERE DeveloperName ='Renewal_Opportunity'];
+            Id rectypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Renewal Opportunity').getRecordTypeId();
             
-            RecordType rectypeId1 = [SELECT Id FROM RecordType WHERE DeveloperName ='Business'];
-            for (Opportunity opp : Opportunities) {
+            Id rectypeId1 = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Business').getRecordTypeId();
+            for (Opportunity opp : opportunities) {
                 
-                if (opp.RecordTypeId == rectypeId1.Id && opp.StageName == 'Closed Won') {
+                if (opp.RecordTypeId == rectypeId1 && opp.StageName == 'Closed Won') {
                     Opportunity renewalOpp = new Opportunity();
 
                     // Set the fields for the Renewal Opportunity
-                    renewalOpp.RecordTypeId = rectypeId.Id;
+                    renewalOpp.RecordTypeId = rectypeId;
                     renewalOpp.Name = opp.Name + ' - Renewal';
                     renewalOpp.CloseDate = System.today() + 30;
                     renewalOpp.StageName = 'Renewal Ready';
