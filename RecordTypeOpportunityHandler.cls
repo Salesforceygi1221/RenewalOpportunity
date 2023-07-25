@@ -5,8 +5,8 @@ public class RecordTypeOpportunityHandler {
             List<Opportunity> renewalOpportunities = new List<Opportunity>();
             
             Id rectypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Renewal Opportunity').getRecordTypeId();
-            
             Id rectypeId1 = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Business').getRecordTypeId();
+
             for (Opportunity opp : opportunities) {
                 
                 if (opp.RecordTypeId == rectypeId1 && opp.StageName == 'Closed Won') {
