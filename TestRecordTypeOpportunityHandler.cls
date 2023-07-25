@@ -27,11 +27,22 @@ public class TestRecordTypeOpportunityHandler {
     
     @isTest
     static void testCreateRenewalOpportunities() {
+        
         // Start the test
-        test.startTest();        
+        test.startTest();
         // Call the createRenewalOpportunities() method on the RecordTypeOpportunityHandler class
         RecordTypeOpportunityHandler.createRenewalOpportunities(oppList);
-        // Stop the test
-        test.stopTest();
+        test.stopTest(); 
+        // Get the list of renewal opportunities
+        List<Opportunity> renewalOpportunities = [
+            select Id, Name, CloseDate, StageName
+            from Opportunity
+            where RecordTypeId =: Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Renewal Opportunity').getRecordTypeId()
+        ];
+        
+        System.assertEquals(1, renewalOpportunities.size());
+        System.assertEquals('sample1 - Renewal', renewalOpportunities[0].Name);
+        System.assertEquals(System.today() + 30, renewalOpportunities[0].CloseDate );
+        System.assertEquals('Renewal Ready', renewalOpportunities[0].StageName);
     }
 }
